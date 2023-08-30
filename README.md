@@ -1,91 +1,111 @@
-# Домашнее задание к занятию 3. «Введение. Экосистема. Архитектура. Жизненный цикл Docker-контейнера»
+# Домашнее задание к занятию 4. «Оркестрация группой Docker-контейнеров на примере Docker Compose»
 # Задача 1
 <!--Списко-->
-* Сценарий выполнения задачи:.
-1. создайте свой репозиторий на https://hub.docker.com;
-2. выберите любой образ, который содержит веб-сервер Nginx; 
-3. создайте свой fork образа;
-4. реализуйте функциональность: запуск веб-сервера в фоне с индекс-страницей, содержащей HTML-код ниже:
-
-```
-<html>
-<head>
-Hey, Netology
-</head>
-<body>
-<h1>Im DevOps Engineer!</h1>
-</body>
-</html>
-```
-Ответ
-[Ссылка на hub.docker.com](https://hub.docker.com/r/k1235/nginx)
+* Создайте собственный образ любой операционной системы (например, debian-11) с помощью Packer версии 1.5.0 
+ответ 
+![Alt text](image.png)
 
 # Задача 2
-<!--Списко-->
-* Посмотрите на сценарий ниже и ответьте на вопрос: «Подходит ли в этом сценарии использование Docker-контейнеров или лучше подойдёт виртуальная машина, физическая машина? Может быть, возможны разные варианты?»
 
-Детально опишите и обоснуйте свой выбор.
-Сценарий:
-  ## 1. Высоконагруженное монолитное Java веб-приложение;
-      Приложение монолитное и данном случае лучше использовать ВМ.
-  ## 2. Nodejs веб-приложение;
-      Я думаю в данном случае лучше docker так как выгода будет в экономии ресурсов а так же скорость  развертывания.
-  ## 3. Мобильное приложение c версиями для Android и iOS;
-      Под android я думаю лучше docker  а вот под ios думаю из за ограничении не пойдет.
-  ## 4.Шина данных на базе Apache Kafka;
-      Думаю docker 
-  ## 5. Elasticsearch-кластер для реализации логирования продуктивного веб-приложения — три ноды elasticsearch, два logstash и две ноды kibana;
-      Docker 
-  ## 6.Мониторинг-стек на базе Prometheus и Grafana;
-      Я думаю здесь нужен ВМ так как моиторинг хранит много данных.
-  ## 7. MongoDB как основное хранилище данных для Java-приложения;
-      Для баз данных требуется высокая произволительность ВМ или физический сервер.
-  ## 8.Gitlab-сервер для реализации CI/CD-процессов и приватный (закрытый) Docker Registry.
-      Я думаю луше ВМ так как для репозиторий нужно много места на диске.      
+  ## 2.1. Создайте вашу первую виртуальную машину в YandexCloud с помощью web-интерфейса YandexCloud.
+ ![Alt text](image-2.png)
+ ## 2.2 Создайте вашу первую виртуальную машину в YandexCloud с помощью Terraform (вместо использования веб-интерфейса YandexCloud). Используйте Terraform-код в директории (src/terraform).
+ ![Alt text](image-4.png)
+ ```
+ k1235@kk005:~/Templates/terraform1$ terraform apply
 
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # yandex_compute_instance.node01 will be created
+  + resource "yandex_compute_instance" "node01" {
+      + allow_stopping_for_update = true
+      + created_at                = (known after apply)
+      + description               = "node01"
+      + folder_id                 = "b1gft4ohvq3ph6dd94b5"
+      + fqdn                      = (known after apply)
+      + gpu_cluster_id            = (known after apply)
+      + hostname                  = "node01"
+      + id                        = (known after apply)
+      + name                      = "node01"
+      + network_acceleration_type = "standard"
+      + platform_id               = "standard-v2"
+      + service_account_id        = (known after apply)
+      + status                    = (known after apply)
+      + zone                      = "ru-central1-a"
+
+      + boot_disk {
+          + auto_delete = true
+          + device_name = (known after apply)
+          + disk_id     = (known after apply)
+          + mode        = (known after apply)
+
+          + initialize_params {
+              + block_size  = (known after apply)
+              + description = (known after apply)
+              + image_id    = "fd87r8o33oua69b0l0ka"
+              + name        = (known after apply)
+              + size        = 30
+              + snapshot_id = (known after apply)
+              + type        = "network-ssd"
+            }
+        }
+
+      + network_interface {
+          + index              = (known after apply)
+          + ip_address         = (known after apply)
+          + ipv4               = true
+          + ipv6               = (known after apply)
+          + ipv6_address       = (known after apply)
+          + mac_address        = (known after apply)
+          + nat                = true
+          + nat_ip_address     = (known after apply)
+          + nat_ip_version     = (known after apply)
+          + security_group_ids = (known after apply)
+          + subnet_id          = "e9b39kn7auac3vjde732"
+        }
+
+      + resources {
+          + core_fraction = 100
+          + cores         = 2
+          + memory        = 4
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+yandex_compute_instance.node01: Creating...
+yandex_compute_instance.node01: Still creating... [10s elapsed]
+yandex_compute_instance.node01: Still creating... [20s elapsed]
+yandex_compute_instance.node01: Still creating... [30s elapsed]
+yandex_compute_instance.node01: Still creating... [40s elapsed]
+yandex_compute_instance.node01: Still creating... [50s elapsed]
+yandex_compute_instance.node01: Still creating... [1m0s elapsed]
+yandex_compute_instance.node01: Creation complete after 1m0s [id=fhm48ei8m8hu672qolv1]
+
+ ```
       
+    
 
 # Задача 3
-## 1.Запустите первый контейнер из образа centos c любым тэгом в фоновом режиме, подключив папку /data из текущей рабочей директории на хостовой машине в /data контейнера;
-```
-k1235@kk005:~/data$ docker run -d  -it -v ${PWD}:/data centos:latest 
-2a26818984980d87f351d8b1dc721dc6499c8e14aca1700e4fc266d009fd373b
-k1235@kk005:~/data$ docker ps
-CONTAINER ID   IMAGE           COMMAND       CREATED         STATUS         PORTS     NAMES
-2a2681898498   centos:latest   "/bin/bash"   5 seconds ago   Up 5 seconds             clever_ardinghelli
-k1235@kk005:~/data$ 
-```
-## 2. Запустите второй контейнер из образа debian в фоновом режиме, подключив папку /data из текущей рабочей директории на хостовой машине в /data контейнера.
-```
-k1235@kk005:~/data$ docker run -d  -it -v ${PWD}:/data debian:latest 
-Unable to find image 'debian:latest' locally
-latest: Pulling from library/debian
-de4cac68b616: Pull complete 
-Digest: sha256:b91baba9c2cae5edbe3b0ff50ae8f05157e3ae6f018372dcfc3aba224acb392b
-Status: Downloaded newer image for debian:latest
-1f0fea3ad6d5958ded8e5155067ac7cf2da9e6fdc2ee81df30c9d11aa94fc7c1
-k1235@kk005:~/data$ docker ps
-CONTAINER ID   IMAGE           COMMAND   CREATED         STATUS         PORTS     NAMES
-1f0fea3ad6d5   debian:latest   "bash"    6 seconds ago   Up 5 seconds             trusting_cori
-k1235@kk005:~/data$ 
-```
-## 3. Подключитесь к первому контейнеру с помощью docker exec и создайте текстовый файл любого содержания в /data.
-```
-root@1f0fea3ad6d5:/data# ls
-test
-```
-## 4.Добавьте ещё один файл в папку /data на хостовой машине.
- ```
- root@1f0fea3ad6d5:/data# ls
-test  test2
-```
-## 5.Подключитесь во второй контейнер и отобразите листинг и содержание файлов в /data контейнера.
- ```
- k1235@kk005:~/data$ docker exec -it 9078dbf4b3ed bash
-[root@9078dbf4b3ed /]# ls
-bin  data  dev	etc  home  lib	lib64  lost+found  media  mnt  opt  proc  root	run  sbin  srv	sys  tmp  usr  var
-[root@9078dbf4b3ed /]# cd data/
-[root@9078dbf4b3ed data]# ls
-test  test2
-[root@9078dbf4b3ed data]# 
-```
+## С помощью Ansible и Docker Compose разверните на виртуальной машине из предыдущего задания систему мониторинга на основе Prometheus/Grafana. Используйте Ansible-код в директории (src/ansible).
+![Alt text](image-5.png)
+
+
+
+# Задача 4
+
+  1. Откройте веб-браузер, зайдите на страницу http://<внешний_ip_адрес_вашей_ВМ>:3000.
+  2. Используйте для авторизации логин и пароль из .env-file.
+  3. Изучите доступный интерфейс, найдите в интерфейсе автоматически созданные docker-compose-панели с графиками(dashboards).
+  4. Подождите 5-10 минут, чтобы система мониторинга успела накопить данные.
+
+ К сожаленю я так не смог открыть страницу хотя все контейнеры запустились.
