@@ -1,0 +1,77 @@
+# Домашнее задание к занятию «Основы Terraform. Yandex Cloud»
+# Задача 1
+  1. Изучите проект. В файле variables.tf объявлены переменные для Yandex provider.
+  2. Переименуйте файл personal.auto.tfvars_example в personal.auto.tfvars. Заполните переменные: идентификаторы облака, токен доступа. Благодаря .gitignore этот файл не попадёт в публичный репозиторий. Вы можете выбрать иной способ безопасно передать секретные данные в terraform.
+  3. Сгенерируйте или используйте свой текущий ssh-ключ. Запишите его открытую часть в переменную vms_ssh_root_key.
+  4. Инициализируйте проект, выполните код. Исправьте намеренно допущенные синтаксические ошибки. Ищите внимательно, посимвольно. Ответьте, в чём заключается их суть.
+  5.Ответьте, как в процессе обучения могут пригодиться параметры preemptible = true и core_fraction=5 в параметрах ВМ. Ответ в документации Yandex Cloud.
+### В качестве решения приложите:
+![Alt text](image.png)
+![Alt text](image-1.png)
+* ответы на вопрос:
+  1. Ошибка в блоке resource "yandex_compute_instance" "platform"
+  2. preemptible = true - создает ВМ прерываемой.
+  3. core_fraction=5 задает уровень производительности.
+
+
+# Задача 2
+  1. Изучите файлы проекта.
+  2. Замените все хардкод-значения для ресурсов yandex_compute_image и yandex_compute_instance на отдельные переменные. К названиям переменных ВМ добавьте в начало префикс vm_web_ . Пример: vm_web_name.
+  3. Объявите нужные переменные в файле variables.tf, обязательно указывайте тип переменной. Заполните их default прежними значениями из main.tf.
+  4. Проверьте terraform plan. Изменений быть не должно.
+![Alt text](image-2.png)
+```
+
+variable "vm_web_resources" {
+  type = map(string)
+  default = { cores = "2", memory = "1", core_fraction = "5" }
+}
+
+variable "vm_web_image" {
+  type = string
+  default = "ubuntu-2004-lts"
+  description = "ubuntu releasse name"
+}
+
+variable "vm_web_platform" {
+  type = string
+  default = "standard-v1"
+  description = "platform_name"
+}
+
+ ```
+
+# Задача 3
+  1.Создайте в корне проекта файл 'vms_platform.tf' . Перенесите в него все переменные первой ВМ.
+  2. Скопируйте блок ресурса и создайте с его помощью вторую ВМ в файле main.tf: "netology-develop-platform-db" , cores = 2, memory = 2, core_fraction = 20. Объявите её переменные с префиксом vm_db_ в том же файле ('vms_platform.tf').
+  3. Примените изменения.
+![Alt text](image-4.png)
+
+
+# Задача 4
+  1.Объявите в файле outputs.tf output типа map, содержащий { instance_name = external_ip } для каждой из ВМ.
+  2. Примените изменения.
+  В качестве решения приложите вывод значений ip-адресов команды terraform output.
+  ![Alt text](image-5.png)
+  # Задача 7
+  1. Напишите, какой командой можно отобразить второй элемент списка test_list.
+```
+  > local.test_list.1
+  "staging"
+```
+  2. Найдите длину списка test_list с помощью функции length(<имя переменной>).
+```
+> length(local.test_list)
+3
+```
+  3. Напишите, какой командой можно отобразить значение ключа admin из map test_map.
+```
+> local.test_map.admin
+"John"
+```  
+  4. Напишите interpolation-выражение, результатом которого будет: "John is admin for production server based on OS ubuntu-20-04 with X vcpu, Y ram and Z virtual disks", используйте данные из переменных test_list, test_map, servers и функцию length() для подстановки значений.
+  ```
+ > "${local.test_map.admin} is ${keys(local.test_map)[1]} for ${local.test_list.2} server based on OS ${local.servers.stage.image} with ${local.servers.stage.cpu} vcpu, ${local.servers.stage.ram} ram and ${length(local.servers.stage.disks)} virtual disks"
+"John is user for production server based on OS ubuntu-20-04 with 4 vcpu, 8 ram and 2 virtual disks"
+> 
+  ```
