@@ -55,7 +55,7 @@ resource "yandex_compute_instance" "platform"  {
  }
 ```
 
-2. Создайте файл for_each-vm.tf. Опишите в нём создание двух ВМ с именами "main" и "replica" разных по cpu/ram/disk , используя мета-аргумент for_each loop. Используйте для обеих ВМ одну общую переменную типа list(object({ vm_name=string, cpu=number, ram=number, disk=number })). При желании внесите в переменную все возможные параметры.
+![Alt text](image-7.png) 2. Создайте файл for_each-vm.tf. Опишите в нём создание двух ВМ с именами "main" и "replica" разных по cpu/ram/disk , используя мета-аргумент for_each loop. Используйте для обеих ВМ одну общую переменную типа list(object({ vm_name=string, cpu=number, ram=number, disk=number })). При желании внесите в переменную все возможные параметры.
 
 ```
 resource "yandex_compute_instance" "vm"  {
@@ -93,7 +93,7 @@ metadata = {
 }
 ```
 
-![Alt text](image-6.png) 3. ВМ из пункта 2.2 должны создаваться после создания ВМ из пункта 2.1.
+3. ВМ из пункта 2.2 должны создаваться после создания ВМ из пункта 2.1.
 
 ```
 resource "yandex_compute_instance" "vm"  {
