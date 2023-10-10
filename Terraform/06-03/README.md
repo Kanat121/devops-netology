@@ -45,6 +45,7 @@ resource "yandex_compute_instance" "platform"  {
   }
   network_interface {
     subnet_id = yandex_vpc_subnet.develop.id
+    security_group_ids = [yandex_vpc_security_group.example.id]
     nat       = true
   }
 
@@ -55,7 +56,7 @@ resource "yandex_compute_instance" "platform"  {
  }
 ```
 
-![Alt text](image-7.png) 2. Создайте файл for_each-vm.tf. Опишите в нём создание двух ВМ с именами "main" и "replica" разных по cpu/ram/disk , используя мета-аргумент for_each loop. Используйте для обеих ВМ одну общую переменную типа list(object({ vm_name=string, cpu=number, ram=number, disk=number })). При желании внесите в переменную все возможные параметры.
+2. Создайте файл for_each-vm.tf. Опишите в нём создание двух ВМ с именами "main" и "replica" разных по cpu/ram/disk , используя мета-аргумент for_each loop. Используйте для обеих ВМ одну общую переменную типа list(object({ vm_name=string, cpu=number, ram=number, disk=number })). При желании внесите в переменную все возможные параметры.
 
 ```
 resource "yandex_compute_instance" "vm"  {
